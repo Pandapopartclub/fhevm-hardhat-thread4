@@ -9,6 +9,9 @@ import type { HardhatUserConfig } from "hardhat/config";
 import { vars } from "hardhat/config";
 import "solidity-coverage";
 
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig();
+
 import "./tasks/accounts";
 import "./tasks/FHECounter";
 
@@ -49,13 +52,9 @@ const config: HardhatUserConfig = {
       url: "http://localhost:8545",
     },
     sepolia: {
-      accounts: {
-        mnemonic: MNEMONIC,
-        path: "m/44'/60'/0'/0/",
-        count: 10,
-      },
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 11155111,
-      url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      url: process.env.SEPOLIA_RPC_URL || "",
     },
   },
   paths: {
